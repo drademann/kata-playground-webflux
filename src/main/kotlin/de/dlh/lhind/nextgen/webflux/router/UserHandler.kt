@@ -23,4 +23,12 @@ class UserHandler(val userService: UserService) {
                     .bodyValue(newUser)
             }
 
+    fun put(serverRequest: ServerRequest): Mono<ServerResponse> =
+        serverRequest.bodyToMono(User::class.java)
+            .flatMap { user -> userService.update(serverRequest.pathVariable("id"), user) }
+            .flatMap { updatedUser ->
+                ServerResponse
+                    .ok()
+                    .bodyValue(updatedUser)
+            }
 }

@@ -4,6 +4,7 @@ import com.ninjasquad.springmockk.MockkBean
 import de.dlh.lhind.nextgen.webflux.model.User
 import de.dlh.lhind.nextgen.webflux.service.UserService
 import io.mockk.every
+import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient
@@ -52,7 +53,7 @@ class UserRouterTests {
             .bodyValue(
                 """
                 {
-                    "id":   "ABC",
+                    "id":   "abc",
                     "name": "Max Mustermann"
                 }
                 """
@@ -60,6 +61,26 @@ class UserRouterTests {
             .exchange()
             .expectStatus().isCreated
             .expectHeader().valueEquals("Location", "/users/abc")
+    }
+
+    @Test
+    fun `should allow to update a user`() {
+        every { mockedUserService.update(any(), any()) } returns just(User("abc", "Oskar Tonne"))
+
+        client.put().uri("/users/abc")
+            .contentType(APPLICATION_JSON)
+            .bodyValue(
+                """
+                {
+                    "id": "abc",
+                    "name": "Max Power"
+                }
+                """
+            )
+            .exchange()
+            .expectStatus().isOk
+
+        verify { mockedUserService.update("abc", User("abc", "Max Power")) }
     }
 
 }
