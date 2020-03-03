@@ -12,8 +12,8 @@ class UserRepository {
 
     private val users = HashMap<UUID, User>()
 
-    fun all() = Flux.fromIterable(users.values)
-    fun by(id: UUID) = Mono.justOrEmpty(users[id])
+    fun all(): Flux<User> = Flux.fromIterable(users.values)
+    fun by(id: UUID): Mono<User> = Mono.justOrEmpty(users[id])
 
     fun save(user: User) {
         users[user.id] = user
