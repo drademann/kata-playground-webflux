@@ -10,17 +10,17 @@ import kotlin.collections.HashMap
 @Repository
 class UserRepository {
 
-    private val users = HashMap<UUID, User>()
+    private val users = HashMap<String, User>()
 
     fun all(): Flux<User> = Flux.fromIterable(users.values)
-    fun by(id: UUID): Mono<User> = Mono.justOrEmpty(users[id])
+    fun by(id: String): Mono<User> = Mono.justOrEmpty(users[id])
 
-    fun save(user: User) {
-        users[user.id] = user
+    fun save(user: User): Mono<User> {
+        val newUser = User(UUID.randomUUID().toString(), user.name)
+        users[user.id] = newUser
+        return by(newUser.id)
     }
 
-    fun delete(user: User) {
-        users.remove(user.id)
-    }
+    fun delete(user: User): Mono<User> = Mono.justOrEmpty(users.remove(user.id))
 
 }

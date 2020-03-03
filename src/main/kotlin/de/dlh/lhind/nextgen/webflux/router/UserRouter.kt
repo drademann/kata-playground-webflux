@@ -10,6 +10,7 @@ class UserRouter(val handler: UserHandler) {
     @Bean
     fun routes() = router {
         GET("/users", handler::get)
+        POST("/users", handler::post)
     }
 
 }

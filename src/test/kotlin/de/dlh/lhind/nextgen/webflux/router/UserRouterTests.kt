@@ -8,9 +8,10 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment
+import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.web.reactive.server.WebTestClient
 import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono.just
 import java.util.*
 
 @AutoConfigureWebTestClient
@@ -25,21 +26,40 @@ class UserRouterTests {
 
     @Test
     fun `should provide all users`() {
-        val expectedAxelID = UUID.randomUUID()
-        val expectedHolgerID = UUID.randomUUID()
+        val expectedAxelID = UUID.randomUUID().toString()
+        val expectedHolgerID = UUID.randomUUID().toString()
 
         val dirk = User(expectedAxelID, "Axel")
         val holger = User(expectedHolgerID, "Holger")
         every { mockedUserService.all() } returns Flux.fromIterable(listOf(dirk, holger))
 
         client.get().uri("/users")
-                .exchange()
-                .expectStatus().isOk
-                .expectBody()
-                .jsonPath("$[0].id").isEqualTo(expectedAxelID.toString())
-                .jsonPath("$[0].name").isEqualTo("Axel")
-                .jsonPath("$[1].id").isEqualTo(expectedHolgerID.toString())
-                .jsonPath("$[1].name").isEqualTo("Holger")
+            .exchange()
+            .expectStatus().isOk
+            .expectBody()
+            .jsonPath("$[0].id").isEqualTo(expectedAxelID)
+            .jsonPath("$[0].name").isEqualTo("Axel")
+            .jsonPath("$[1].id").isEqualTo(expectedHolgerID)
+            .jsonPath("$[1].name").isEqualTo("Holger")
+    }
+
+    @Test
+    fun `should accept a new user`() {
+        every { mockedUserService.add(any()) } returns just(User("abc", "Oskar Tonne"))
+
+        client.post().uri("/users")
+            .contentType(APPLICATION_JSON)
+            .bodyValue(
+                """
+                {
+                    "id":   "ABC",
+                    "name": "Max Mustermann"
+                }
+                """
+            )
+            .exchange()
+            .expectStatus().isCreated
+            .expectHeader().valueEquals("Location", "/users/abc")
     }
 
 }
