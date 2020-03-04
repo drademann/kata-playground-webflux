@@ -30,9 +30,9 @@ class UserRouterTests {
         val expectedAxelID = UUID.randomUUID().toString()
         val expectedHolgerID = UUID.randomUUID().toString()
 
-        val dirk = User(expectedAxelID, "Axel")
+        val axel = User(expectedAxelID, "Axel")
         val holger = User(expectedHolgerID, "Holger")
-        every { mockedUserService.all() } returns Flux.fromIterable(listOf(dirk, holger))
+        every { mockedUserService.all() } returns Flux.fromIterable(listOf(axel, holger))
 
         client.get().uri("/users")
             .exchange()
