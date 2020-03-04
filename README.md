@@ -18,14 +18,14 @@ PUT /users/<ID>
     "name: "Max Power"
 }
 ```
-- respond with `BAD_REQUEST` if UUIDs do not match
-- respond with `NOT_FOUND` if user with UUID does not exist
+- respond with `BAD_REQUEST` if IDs do not match
+- respond with `NOT_FOUND` if user with ID does not exist
 
 #### DELETE for a user
 ```
-DELETE /users/<UUID>
+DELETE /users/<ID>
 ```
-- respond with `NOT_FOUND` if user with UUID does not exist
+- respond with `NOT_FOUND` if user with ID does not exist
 
 #### GET for books
 ```
