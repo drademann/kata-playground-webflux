@@ -31,4 +31,6 @@ class UserHandler(val userService: UserService) {
                     .ok()
                     .bodyValue(updatedUser)
             }
+            .switchIfEmpty(ServerResponse.notFound().build())
+
 }

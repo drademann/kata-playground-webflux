@@ -12,5 +12,6 @@ class UserService(val userRepository: UserRepository) {
     fun all(): Flux<User> = userRepository.all()
 
     fun add(user: User): Mono<User> = userRepository.save(user)
-    fun update(id: String, user: User) = userRepository.save(user)
+    fun update(id: String, user: User): Mono<User> = userRepository.by(id).flatMap { userRepository.save(it) }
+
 }
