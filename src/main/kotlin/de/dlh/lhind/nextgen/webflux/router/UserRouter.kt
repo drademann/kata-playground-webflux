@@ -11,7 +11,6 @@ class UserRouter(val handler: UserHandler) {
     fun routes() = router {
         GET("/users", handler::get)
         POST("/users", handler::post)
-        PUT("/users/{id}", handler::put)
     }
 
 }

@@ -16,21 +16,11 @@ class UserHandler(val userService: UserService) {
 
     fun post(serverRequest: ServerRequest): Mono<ServerResponse> =
         serverRequest.bodyToMono(User::class.java)
-            .flatMap { user -> userService.add(user) }
-            .flatMap { newUser ->
-                ServerResponse
-                    .created(URI.create("/users/${newUser.id}"))
-                    .bodyValue(newUser)
-            }
-
-    fun put(serverRequest: ServerRequest): Mono<ServerResponse> =
-        serverRequest.bodyToMono(User::class.java)
-            .flatMap { user -> userService.update(serverRequest.pathVariable("id"), user) }
-            .flatMap { updatedUser ->
-                ServerResponse
-                    .ok()
-                    .bodyValue(updatedUser)
-            }
-            .switchIfEmpty(ServerResponse.notFound().build())
+                .flatMap { user -> userService.add(user) }
+                .flatMap { newUser ->
+                    ServerResponse
+                            .created(URI.create("/users/${newUser.id}"))
+                            .bodyValue(newUser)
+                }
 
 }
