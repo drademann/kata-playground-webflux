@@ -10,9 +10,10 @@ import reactor.core.publisher.Mono
 import java.net.URI
 
 @Component
-class UserHandler(val userService: UserService) {
+class UserHandler(private val userService: UserService) {
 
-    fun get(serverRequest: ServerRequest): Mono<ServerResponse> = ServerResponse.ok().body(userService.all())
+    fun get(serverRequest: ServerRequest): Mono<ServerResponse> =
+        ServerResponse.ok().body(userService.all())
 
     fun post(serverRequest: ServerRequest): Mono<ServerResponse> =
         serverRequest.bodyToMono(User::class.java)

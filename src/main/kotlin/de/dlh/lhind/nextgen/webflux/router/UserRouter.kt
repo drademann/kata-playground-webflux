@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.web.reactive.function.server.router
 
 @Configuration
-class UserRouter(val handler: UserHandler) {
+class UserRouter(private val handler: UserHandler) {
 
     @Bean
     fun routes() = router {
