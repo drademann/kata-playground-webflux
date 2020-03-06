@@ -1,5 +1,11 @@
 # Kata WebFlux
 
+## Links
+
+- [Introduction to Reactive Programming](https://projectreactor.io/docs/core/release/reference/index.html#intro-reactive)
+- [Reactor Core Features](https://projectreactor.io/docs/core/release/reference/index.html#core-features)
+- [Spring WebFlux](https://docs.spring.io/spring/docs/5.2.4.RELEASE/spring-framework-reference/web-reactive.html#spring-webflux)
+
 ## Requirements
 
 #### POST for a new user
